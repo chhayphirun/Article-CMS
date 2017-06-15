@@ -15,4 +15,7 @@ public interface ArticleService {
     @GET("v1/api/articles")
     Call<ArticleResponse> findArticles(@Query("limit") int limit);
 
+    @GET("v1/api/articles")
+    Call<ArticleResponse> findArticlesbyname(@Query("title") String title);
+
 }

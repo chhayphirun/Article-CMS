@@ -37,8 +37,9 @@ public class ArticleAdapter extends RecyclerView.Adapter<ArticleAdapter.ArticleV
 
         ArticleResponse.Article article = articleList.get(position);
 
-        holder.tvTitle.setText(article.getTitle());
-        holder.tvDescription.setText(article.getDescription());
+        holder.tvTitle.setText("Title : "+article.getTitle());
+        holder.tvDescription.setText("Description : "+article.getDescription());
+        holder.tvceatedate.setText("CreatedDate : "+article.getCreatedDate());
     }
 
     @Override
@@ -50,6 +51,11 @@ public class ArticleAdapter extends RecyclerView.Adapter<ArticleAdapter.ArticleV
     public void addMoreItems(List<ArticleResponse.Article> articleList){
         this.articleList.addAll(articleList);
         notifyDataSetChanged();
+    }
+    public void clearItems(){
+        this.articleList.removeAll( articleList);
+
+
     }
 
 
@@ -63,6 +69,9 @@ public class ArticleAdapter extends RecyclerView.Adapter<ArticleAdapter.ArticleV
 
         @BindView(R.id.tvDescription)
         TextView tvDescription;
+
+        @BindView(R.id.txtcreatedate)
+        TextView tvceatedate;
 
         public ArticleViewHolder(View itemView) {
             super(itemView);

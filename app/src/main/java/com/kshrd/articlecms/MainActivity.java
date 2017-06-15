@@ -1,10 +1,12 @@
 package com.kshrd.articlecms;
 
-import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.util.Log;
+import android.view.View;
+import android.widget.Button;
+import android.widget.EditText;
 
 import com.kshrd.articlecms.entity.ArticleResponse;
 import com.kshrd.articlecms.webservice.ArticleService;
@@ -22,6 +24,11 @@ public class MainActivity extends AppCompatActivity {
     RecyclerView rvArticle;
 
     ArticleAdapter articleAdapter;
+    @BindView(R.id.btnfindname)
+    Button btnfindname;
+
+    @BindView(R.id.etfindname)
+    EditText etfindname;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -33,7 +40,7 @@ public class MainActivity extends AppCompatActivity {
 
 
         ArticleService articleService = ServiceGenerator.createService(ArticleService.class);
-        Call<ArticleResponse> call = articleService.findArticles(5);
+        final Call<ArticleResponse> call = articleService.findArticles(3);
         call.enqueue(new Callback<ArticleResponse>() {
             @Override
             public void onResponse(Call<ArticleResponse> call, Response<ArticleResponse> response) {
@@ -48,7 +55,28 @@ public class MainActivity extends AppCompatActivity {
                 t.printStackTrace();
             }
         });
+        btnfindname.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+            ArticleService articleService1=ServiceGenerator.createService(ArticleService.class);
+                Call<ArticleResponse> call1=articleService1.findArticlesbyname(String.valueOf(etfindname.getText()));
+                call1.enqueue(new Callback<ArticleResponse>() {
+                    @Override
+                    public void onResponse(Call<ArticleResponse> call, Response<ArticleResponse> response) {
+                        ArticleResponse articleResponse1=response.body();
+                        articleAdapter.clearItems();
+                        articleAdapter.notifyDataSetChanged();
+                        articleAdapter.addMoreItems(articleResponse1.getArticlelist());
+                    }
 
+                    @Override
+                    public void onFailure(Call<ArticleResponse> call, Throwable t) {
+
+                    }
+                });
+
+            }
+        });
         // Code..
 
 
